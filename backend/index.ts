@@ -1,15 +1,16 @@
 import SpotifyWebApi from "spotify-web-api-node"
-import { SpotifyApi } from '@spotify/web-api-ts-sdk'
+// import { SpotifyClient } from '@spotify/web-api-ts-sdk'
+// import { Spoct } from "easy-spotify-ts"
 import express from "express"
 import querystring from "querystring"
 import request from "request"
 import crypto from "crypto"
 
-let clientId = 'e868a1740c0447b88341c1af8dfeeb69'
-let clientSecret = "9c3d9a9dc0f440d3a30d758cf249304d"
+let clientId = process.env.CLIENT_ID
+let clientSecret = process.env.CLIENT_SECRET
 const spotifyWebApi = new SpotifyWebApi({
-   clientId: 'e868a1740c0447b88341c1af8dfeeb69',
-   clientSecret: "9c3d9a9dc0f440d3a30d758cf249304d",
+   clientId: process.env.CLIENT_ID,
+   clientSecret: process.env.CLIENT_SECRET,
    redirectUri : 'http://localhost:3001/callback'
     }
 )
@@ -18,15 +19,8 @@ function generateRandomString(value : number){
     return crypto.randomBytes(60).toString('hex').slice(0, value);
 }
 
-
-
 const app = express();
-
-
 app.use(express.json());
-
-
-
 
 app.get("/login", (req, res) => {
     const state = generateRandomString(16)
@@ -66,6 +60,7 @@ app.get("/callback", async (req, res) => {
        request.post(authOptions, function(err, response, body){
         let accessToken = body.access_token;
         let refreshToken = body.refresh_token;
+        console.log(accessToken)
         spotifyWebApi.setAccessToken(accessToken)
         const data = searchMyTrack('Wavy');
       })
