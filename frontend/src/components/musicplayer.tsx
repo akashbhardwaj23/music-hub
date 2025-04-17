@@ -35,7 +35,7 @@ export default function MusicPlayer() {
       artist: "Vercel Audio",
       album: "Digital Landscapes",
       duration: 237,
-      coverArt: "/placeholder.svg?height=400&width=400",
+      coverArt: "/globe.svg",
       audioSrc: "/music.mp3",
       isFavorite: true,
       genre: "Ambient",
@@ -340,7 +340,7 @@ export default function MusicPlayer() {
         </div>
       </div>
 
-      <audio ref={audioRef} src={currentTrack.audioSrc} onEnded={handleNextTrack} preload="metadata" />
+      <audio ref={audioRef} src={currentTrack.audioSrc} onEnded={handleNextTrack} preload="none" />
     </div>
   )
 }

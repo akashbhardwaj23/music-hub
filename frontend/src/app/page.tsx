@@ -4,13 +4,6 @@ import { useTheme } from "next-themes"
 import ChatComponent from "@/components/chat"
 
 export default function Home() {
-  // const {resolvedTheme} = useTheme()
-  // console.log(resolvedTheme)
-  // const [theme, setTheme] = useState<"dark" | "light">("dark")
-
-  // const toggleTheme = () => {
-  //   setTheme(theme === "dark" ? "light" : "dark")
-  // }
 
   return (
     <main className={`bg-background`}>
