@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from "react"
 import { motion, AnimatePresence, useAnimation } from "framer-motion"
 import { Play, Pause, SkipBack, SkipForward, Volume2, Heart, Repeat, Shuffle } from "lucide-react"
 import { AudioSpectrum } from "@/components/ui-effects/audiospectrum"
+import axios from "axios"
+import { BACKEND_URL } from "@/config/lib"
 
 type Track = {
   id: number
@@ -63,6 +65,16 @@ export default function MusicPlayer() {
     //   genre: "Ambient",
     // },
   ]
+
+
+
+  useEffect(() => {
+    const fetchdata = async () => {
+      const response = await axios.get(`${BACKEND_URL}//api/v1/songs`);
+
+      const data = response.data;
+    }
+  }, [])
 
   const currentTrack = tracks[currentTrackIndex]
 
