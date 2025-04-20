@@ -973,16 +973,22 @@ export namespace Prisma {
   export type UserMinAggregateOutputType = {
     id: string | null
     email: string | null
+    name: string | null
+    passsword: string | null
   }
 
   export type UserMaxAggregateOutputType = {
     id: string | null
     email: string | null
+    name: string | null
+    passsword: string | null
   }
 
   export type UserCountAggregateOutputType = {
     id: number
     email: number
+    name: number
+    passsword: number
     _all: number
   }
 
@@ -990,16 +996,22 @@ export namespace Prisma {
   export type UserMinAggregateInputType = {
     id?: true
     email?: true
+    name?: true
+    passsword?: true
   }
 
   export type UserMaxAggregateInputType = {
     id?: true
     email?: true
+    name?: true
+    passsword?: true
   }
 
   export type UserCountAggregateInputType = {
     id?: true
     email?: true
+    name?: true
+    passsword?: true
     _all?: true
   }
 
@@ -1078,6 +1090,8 @@ export namespace Prisma {
   export type UserGroupByOutputType = {
     id: string
     email: string
+    name: string
+    passsword: string
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -1100,24 +1114,32 @@ export namespace Prisma {
   export type UserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     email?: boolean
+    name?: boolean
+    passsword?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     email?: boolean
+    name?: boolean
+    passsword?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     email?: boolean
+    name?: boolean
+    passsword?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
     id?: boolean
     email?: boolean
+    name?: boolean
+    passsword?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "passsword", ExtArgs["result"]["user"]>
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
@@ -1125,6 +1147,8 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       email: string
+      name: string
+      passsword: string
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -1550,6 +1574,8 @@ export namespace Prisma {
   interface UserFieldRefs {
     readonly id: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
+    readonly name: FieldRef<"User", 'String'>
+    readonly passsword: FieldRef<"User", 'String'>
   }
     
 
@@ -1929,6 +1955,7 @@ export namespace Prisma {
   export type SongsMinAggregateOutputType = {
     id: string | null
     songName: string | null
+    favorite: boolean | null
     songurl: string | null
     songImg: string | null
     songDescription: string | null
@@ -1937,6 +1964,7 @@ export namespace Prisma {
   export type SongsMaxAggregateOutputType = {
     id: string | null
     songName: string | null
+    favorite: boolean | null
     songurl: string | null
     songImg: string | null
     songDescription: string | null
@@ -1945,6 +1973,7 @@ export namespace Prisma {
   export type SongsCountAggregateOutputType = {
     id: number
     songName: number
+    favorite: number
     songurl: number
     songImg: number
     songDescription: number
@@ -1955,6 +1984,7 @@ export namespace Prisma {
   export type SongsMinAggregateInputType = {
     id?: true
     songName?: true
+    favorite?: true
     songurl?: true
     songImg?: true
     songDescription?: true
@@ -1963,6 +1993,7 @@ export namespace Prisma {
   export type SongsMaxAggregateInputType = {
     id?: true
     songName?: true
+    favorite?: true
     songurl?: true
     songImg?: true
     songDescription?: true
@@ -1971,6 +2002,7 @@ export namespace Prisma {
   export type SongsCountAggregateInputType = {
     id?: true
     songName?: true
+    favorite?: true
     songurl?: true
     songImg?: true
     songDescription?: true
@@ -2052,6 +2084,7 @@ export namespace Prisma {
   export type SongsGroupByOutputType = {
     id: string
     songName: string
+    favorite: boolean
     songurl: string
     songImg: string
     songDescription: string
@@ -2077,6 +2110,7 @@ export namespace Prisma {
   export type SongsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     songName?: boolean
+    favorite?: boolean
     songurl?: boolean
     songImg?: boolean
     songDescription?: boolean
@@ -2085,6 +2119,7 @@ export namespace Prisma {
   export type SongsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     songName?: boolean
+    favorite?: boolean
     songurl?: boolean
     songImg?: boolean
     songDescription?: boolean
@@ -2093,6 +2128,7 @@ export namespace Prisma {
   export type SongsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     songName?: boolean
+    favorite?: boolean
     songurl?: boolean
     songImg?: boolean
     songDescription?: boolean
@@ -2101,12 +2137,13 @@ export namespace Prisma {
   export type SongsSelectScalar = {
     id?: boolean
     songName?: boolean
+    favorite?: boolean
     songurl?: boolean
     songImg?: boolean
     songDescription?: boolean
   }
 
-  export type SongsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "songName" | "songurl" | "songImg" | "songDescription", ExtArgs["result"]["songs"]>
+  export type SongsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "songName" | "favorite" | "songurl" | "songImg" | "songDescription", ExtArgs["result"]["songs"]>
 
   export type $SongsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Songs"
@@ -2114,6 +2151,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       songName: string
+      favorite: boolean
       songurl: string
       songImg: string
       songDescription: string
@@ -2542,6 +2580,7 @@ export namespace Prisma {
   interface SongsFieldRefs {
     readonly id: FieldRef<"Songs", 'String'>
     readonly songName: FieldRef<"Songs", 'String'>
+    readonly favorite: FieldRef<"Songs", 'Boolean'>
     readonly songurl: FieldRef<"Songs", 'String'>
     readonly songImg: FieldRef<"Songs", 'String'>
     readonly songDescription: FieldRef<"Songs", 'String'>
@@ -2927,7 +2966,9 @@ export namespace Prisma {
 
   export const UserScalarFieldEnum: {
     id: 'id',
-    email: 'email'
+    email: 'email',
+    name: 'name',
+    passsword: 'passsword'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -2936,6 +2977,7 @@ export namespace Prisma {
   export const SongsScalarFieldEnum: {
     id: 'id',
     songName: 'songName',
+    favorite: 'favorite',
     songurl: 'songurl',
     songImg: 'songImg',
     songDescription: 'songDescription'
@@ -2980,6 +3022,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -3002,11 +3051,15 @@ export namespace Prisma {
     NOT?: UserWhereInput | UserWhereInput[]
     id?: StringFilter<"User"> | string
     email?: StringFilter<"User"> | string
+    name?: StringFilter<"User"> | string
+    passsword?: StringFilter<"User"> | string
   }
 
   export type UserOrderByWithRelationInput = {
     id?: SortOrder
     email?: SortOrder
+    name?: SortOrder
+    passsword?: SortOrder
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -3015,11 +3068,15 @@ export namespace Prisma {
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
+    name?: StringFilter<"User"> | string
+    passsword?: StringFilter<"User"> | string
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
     email?: SortOrder
+    name?: SortOrder
+    passsword?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -3031,6 +3088,8 @@ export namespace Prisma {
     NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"User"> | string
     email?: StringWithAggregatesFilter<"User"> | string
+    name?: StringWithAggregatesFilter<"User"> | string
+    passsword?: StringWithAggregatesFilter<"User"> | string
   }
 
   export type SongsWhereInput = {
@@ -3039,6 +3098,7 @@ export namespace Prisma {
     NOT?: SongsWhereInput | SongsWhereInput[]
     id?: StringFilter<"Songs"> | string
     songName?: StringFilter<"Songs"> | string
+    favorite?: BoolFilter<"Songs"> | boolean
     songurl?: StringFilter<"Songs"> | string
     songImg?: StringFilter<"Songs"> | string
     songDescription?: StringFilter<"Songs"> | string
@@ -3047,6 +3107,7 @@ export namespace Prisma {
   export type SongsOrderByWithRelationInput = {
     id?: SortOrder
     songName?: SortOrder
+    favorite?: SortOrder
     songurl?: SortOrder
     songImg?: SortOrder
     songDescription?: SortOrder
@@ -3058,6 +3119,7 @@ export namespace Prisma {
     OR?: SongsWhereInput[]
     NOT?: SongsWhereInput | SongsWhereInput[]
     songName?: StringFilter<"Songs"> | string
+    favorite?: BoolFilter<"Songs"> | boolean
     songurl?: StringFilter<"Songs"> | string
     songImg?: StringFilter<"Songs"> | string
     songDescription?: StringFilter<"Songs"> | string
@@ -3066,6 +3128,7 @@ export namespace Prisma {
   export type SongsOrderByWithAggregationInput = {
     id?: SortOrder
     songName?: SortOrder
+    favorite?: SortOrder
     songurl?: SortOrder
     songImg?: SortOrder
     songDescription?: SortOrder
@@ -3080,6 +3143,7 @@ export namespace Prisma {
     NOT?: SongsScalarWhereWithAggregatesInput | SongsScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Songs"> | string
     songName?: StringWithAggregatesFilter<"Songs"> | string
+    favorite?: BoolWithAggregatesFilter<"Songs"> | boolean
     songurl?: StringWithAggregatesFilter<"Songs"> | string
     songImg?: StringWithAggregatesFilter<"Songs"> | string
     songDescription?: StringWithAggregatesFilter<"Songs"> | string
@@ -3088,41 +3152,56 @@ export namespace Prisma {
   export type UserCreateInput = {
     id?: string
     email: string
+    name: string
+    passsword: string
   }
 
   export type UserUncheckedCreateInput = {
     id?: string
     email: string
+    name: string
+    passsword: string
   }
 
   export type UserUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    passsword?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    passsword?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserCreateManyInput = {
     id?: string
     email: string
+    name: string
+    passsword: string
   }
 
   export type UserUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    passsword?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    passsword?: StringFieldUpdateOperationsInput | string
   }
 
   export type SongsCreateInput = {
     id?: string
     songName: string
+    favorite?: boolean
     songurl: string
     songImg: string
     songDescription: string
@@ -3131,6 +3210,7 @@ export namespace Prisma {
   export type SongsUncheckedCreateInput = {
     id?: string
     songName: string
+    favorite?: boolean
     songurl: string
     songImg: string
     songDescription: string
@@ -3139,6 +3219,7 @@ export namespace Prisma {
   export type SongsUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     songName?: StringFieldUpdateOperationsInput | string
+    favorite?: BoolFieldUpdateOperationsInput | boolean
     songurl?: StringFieldUpdateOperationsInput | string
     songImg?: StringFieldUpdateOperationsInput | string
     songDescription?: StringFieldUpdateOperationsInput | string
@@ -3147,6 +3228,7 @@ export namespace Prisma {
   export type SongsUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     songName?: StringFieldUpdateOperationsInput | string
+    favorite?: BoolFieldUpdateOperationsInput | boolean
     songurl?: StringFieldUpdateOperationsInput | string
     songImg?: StringFieldUpdateOperationsInput | string
     songDescription?: StringFieldUpdateOperationsInput | string
@@ -3155,6 +3237,7 @@ export namespace Prisma {
   export type SongsCreateManyInput = {
     id?: string
     songName: string
+    favorite?: boolean
     songurl: string
     songImg: string
     songDescription: string
@@ -3163,6 +3246,7 @@ export namespace Prisma {
   export type SongsUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     songName?: StringFieldUpdateOperationsInput | string
+    favorite?: BoolFieldUpdateOperationsInput | boolean
     songurl?: StringFieldUpdateOperationsInput | string
     songImg?: StringFieldUpdateOperationsInput | string
     songDescription?: StringFieldUpdateOperationsInput | string
@@ -3171,6 +3255,7 @@ export namespace Prisma {
   export type SongsUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     songName?: StringFieldUpdateOperationsInput | string
+    favorite?: BoolFieldUpdateOperationsInput | boolean
     songurl?: StringFieldUpdateOperationsInput | string
     songImg?: StringFieldUpdateOperationsInput | string
     songDescription?: StringFieldUpdateOperationsInput | string
@@ -3194,16 +3279,22 @@ export namespace Prisma {
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
+    name?: SortOrder
+    passsword?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
+    name?: SortOrder
+    passsword?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
+    name?: SortOrder
+    passsword?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -3224,9 +3315,15 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type SongsCountOrderByAggregateInput = {
     id?: SortOrder
     songName?: SortOrder
+    favorite?: SortOrder
     songurl?: SortOrder
     songImg?: SortOrder
     songDescription?: SortOrder
@@ -3235,6 +3332,7 @@ export namespace Prisma {
   export type SongsMaxOrderByAggregateInput = {
     id?: SortOrder
     songName?: SortOrder
+    favorite?: SortOrder
     songurl?: SortOrder
     songImg?: SortOrder
     songDescription?: SortOrder
@@ -3243,13 +3341,26 @@ export namespace Prisma {
   export type SongsMinOrderByAggregateInput = {
     id?: SortOrder
     songName?: SortOrder
+    favorite?: SortOrder
     songurl?: SortOrder
     songImg?: SortOrder
     songDescription?: SortOrder
   }
 
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -3292,6 +3403,19 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
 

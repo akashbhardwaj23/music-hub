@@ -5,7 +5,7 @@ import { motion, AnimatePresence, useAnimation } from "framer-motion"
 import { Play, Pause, SkipBack, SkipForward, Volume2, Heart, Repeat, Shuffle } from "lucide-react"
 import { AudioSpectrum } from "@/components/ui-effects/audiospectrum"
 import axios from "axios"
-import { BACKEND_URL } from "@/config/lib"
+import { BACKEND_URL, TrackType } from "@/config/lib"
 
 type Track = {
   id: number
@@ -19,7 +19,13 @@ type Track = {
   genre: string
 }
 
-export default function MusicPlayer() {
+
+
+export default function MusicPlayer({
+  tracks
+} : {
+  tracks : TrackType[]
+}) {
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
@@ -28,53 +34,59 @@ export default function MusicPlayer() {
   const [isLoaded, setIsLoaded] = useState(false)
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const visualizerControls = useAnimation()
+ 
 
 
-  const tracks: Track[] = [
-    {
-      id: 1,
-      title: "Midnight Echoes",
-      artist: "Vercel Audio",
-      album: "Digital Landscapes",
-      duration: 237,
-      coverArt: "/globe.svg",
-      audioSrc: "/music.mp3",
-      isFavorite: true,
-      genre: "Ambient",
-    },
-    // {
-    //   id: 2,
-    //   title: "Static Whispers",
-    //   artist: "Mono Type",
-    //   album: "Terminal",
-    //   duration: 195,
-    //   coverArt: "/placeholder.svg?height=400&width=400",
-    //   audioSrc: "/placeholder-audio.mp3",
-    //   isFavorite: false,
-    //   genre: "Electronic",
-    // },
-    // {
-    //   id: 3,
-    //   title: "Digital Rain",
-    //   artist: "Code Ensemble",
-    //   album: "Deployment",
-    //   duration: 218,
-    //   coverArt: "/placeholder.svg?height=400&width=400",
-    //   audioSrc: "/placeholder-audio.mp3",
-    //   isFavorite: true,
-    //   genre: "Ambient",
-    // },
-  ]
+  console.log("Tracks are ", tracks)
+
+  // const tracks: Track[] = [
+  //   {
+  //     id: 1,
+  //     title: "Midnight Echoes",
+  //     artist: "Vercel Audio",
+  //     album: "Digital Landscapes",
+  //     duration: 237,
+  //     coverArt: "/globe.svg",
+  //     audioSrc: "/music.mp3",
+  //     isFavorite: true,
+  //     genre: "Ambient",
+  //   },
+  //   // {
+  //   //   id: 2,
+  //   //   title: "Static Whispers",
+  //   //   artist: "Mono Type",
+  //   //   album: "Terminal",
+  //   //   duration: 195,
+  //   //   coverArt: "/placeholder.svg?height=400&width=400",
+  //   //   audioSrc: "/placeholder-audio.mp3",
+  //   //   isFavorite: false,
+  //   //   genre: "Electronic",
+  //   // },
+  //   // {
+  //   //   id: 3,
+  //   //   title: "Digital Rain",
+  //   //   artist: "Code Ensemble",
+  //   //   album: "Deployment",
+  //   //   duration: 218,
+  //   //   coverArt: "/placeholder.svg?height=400&width=400",
+  //   //   audioSrc: "/placeholder-audio.mp3",
+  //   //   isFavorite: true,
+  //   //   genre: "Ambient",
+  //   // },
+  // ]
 
 
 
-  useEffect(() => {
-    const fetchdata = async () => {
-      const response = await axios.get(`${BACKEND_URL}//api/v1/songs`);
+  // useEffect(() => {
+  //   const fetchdata = async () => {
+  //     const response = await axios.get(`${BACKEND_URL}//api/v1/songs`);
 
-      const data = response.data;
-    }
-  }, [])
+  //     const data = response.data;
+  //   }
+
+  //   fetchdata()
+  // }, [])
+
 
   const currentTrack = tracks[currentTrackIndex]
 
@@ -171,6 +183,7 @@ export default function MusicPlayer() {
     setVolume(newVolume)
   }
 
+
   return (
     <div className="border border-border bg-card overflow-hidden shadow-sm rounded-md">
       <div className="p-0 h-full flex flex-col">
@@ -204,13 +217,13 @@ export default function MusicPlayer() {
                       transition={{ duration: 0.2 }}
                     >
                       <img
-                        src={currentTrack.coverArt || ""}
-                        alt={`${currentTrack.title} by ${currentTrack.artist}`}
+                        src={currentTrack.songImg || ""}
+                        alt={`${currentTrack.songName} by`}
                         className="w-full h-full object-cover"
                       />
                     </motion.div>
 
-                    <motion.div
+                    {/* <motion.div
                       className="absolute -right-2 -bottom-2 z-10"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -219,14 +232,15 @@ export default function MusicPlayer() {
                       <span className="inline-flex items-center rounded-md bg-primary px-2 py-1 text-xs font-medium text-primary-foreground">
                         {currentTrack.genre}
                       </span>
-                    </motion.div>
+                    </motion.div> */}
                   </motion.div>
                 </div>
 
                 <div className="w-full text-center space-y-1">
-                  <h2 className="text-xl font-bold text-forground">{currentTrack.title}</h2>
+                  <h2 className="text-xl font-bold text-forground">{currentTrack.songName}</h2>
                   <p className="text-muted-foreground text-sm">
-                    {currentTrack.artist} • {currentTrack.album}
+                    {/* {currentTrack.artist} • {currentTrack.album} */}
+                    Artist •  Album
                   </p>
                 </div>
 
@@ -320,12 +334,12 @@ export default function MusicPlayer() {
               <div className="flex items-center gap-2">
                 <button
                   className={`flex items-center justify-center size-8 hover:bg-accent/50 rounded-md ${
-                    currentTrack.isFavorite
+                    currentTrack.favorite
                       ? "text-[var(--destructive)]"
                       : "text-[var(--muted-foreground)] hover:text-[var(--foreground)]"
                   }`}
                 >
-                  <Heart size={16} fill={currentTrack.isFavorite ? "currentColor" : "none"} />
+                  <Heart size={16} fill={currentTrack.favorite ? "currentColor" : "none"} />
                 </button>
 
                 <div className="flex items-center py-2 gap-1">
@@ -352,7 +366,7 @@ export default function MusicPlayer() {
         </div>
       </div>
 
-      <audio ref={audioRef} src={currentTrack.audioSrc} onEnded={handleNextTrack} preload="none" />
+      <audio ref={audioRef} src={currentTrack.songurl} onEnded={handleNextTrack} preload="none" />
     </div>
   )
 }

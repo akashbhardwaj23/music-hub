@@ -1,16 +1,20 @@
 "use client"
+
 import { Navbar } from "@/components/ui/navbar"
-import { ThemeProvider } from "next-themes"
+import { AuthProvider } from "@/components/provider/authprovider"
 
 export default function Layout({
     children
 } : {
     children : React.ReactNode
 }){
+
     return (
-        <main>
+        <AuthProvider>
+            <main>
             <Navbar />
             {children}
             </main>
+        </AuthProvider>
     )
 }

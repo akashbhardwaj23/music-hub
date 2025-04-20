@@ -9,7 +9,7 @@ export function Navbar() {
              initial = {{opacity : 0, x : -50}}
              animate = {{opacity : 1, x : 0}}
              transition={{type : "spring", stiffness : 400, damping:12}}
-            className="flex items-center gap-3">
+              className="flex items-center gap-3">
             <motion.div
               whileHover={{ scale: 1.5 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}

@@ -1,5 +1,4 @@
 "use client"
-import { Navbar } from "@/components/ui/navbar"
 import { ThemeProvider } from "next-themes"
 
 export function ThemeLayout({
