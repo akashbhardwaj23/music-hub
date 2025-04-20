@@ -2,14 +2,13 @@
 import { Navbar } from "@/components/ui/navbar"
 import { ThemeProvider } from "next-themes"
 
-export function Layout({
+export function ThemeLayout({
     children
 } : {
     children : React.ReactNode
 }){
     return (
         <ThemeProvider attribute={"class"}>
-            <Navbar />
             {children}
         </ThemeProvider>
     )
