@@ -1,7 +1,7 @@
 "use client"
 
 import { Navbar } from "@/components/ui/navbar"
-import { AuthProvider } from "@/components/provider/authprovider"
+import { AuthProvider } from "@/context/provider/authprovider"
 
 export default function Layout({
     children

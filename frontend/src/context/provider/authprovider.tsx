@@ -6,6 +6,10 @@ export function AuthProvider({
 } : {
     children : React.ReactNode
 }){
+
+    if(window === undefined){
+        return
+    }
     const token = localStorage.getItem("token")
 
     if(!token){

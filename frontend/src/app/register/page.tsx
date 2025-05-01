@@ -8,7 +8,7 @@ import { useState } from "react";
 import { Toaster, toast } from "sonner";
 import { motion } from "motion/react"
 import axios from "axios";
-import { BACKEND_URL } from "@/config/lib";
+import { BACKEND_URL } from "@/config/config";
 import { useRouter } from "next/navigation";
 
 

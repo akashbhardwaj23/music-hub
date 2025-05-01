@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Provider from "@/components/provider/themeprovider";
+import Provider from "@/context/provider/themeprovider";
 import { ThemeLayout } from "./(application)/ThemeLayout";
 
 const geistSans = Geist({
@@ -19,8 +19,6 @@ export const metadata: Metadata = {
   description: "A simple music app",
 };
 
-
-
 // Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
 
 export default function RootLayout({
@@ -33,9 +31,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-      <ThemeLayout>
-        {children}
-      </ThemeLayout>
+        <ThemeLayout>{children}</ThemeLayout>
       </body>
     </html>
   );

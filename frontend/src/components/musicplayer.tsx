@@ -5,7 +5,7 @@ import { motion, AnimatePresence, useAnimation } from "framer-motion"
 import { Play, Pause, SkipBack, SkipForward, Volume2, Heart, Repeat, Shuffle } from "lucide-react"
 import { AudioSpectrum } from "@/components/ui-effects/audiospectrum"
 import axios from "axios"
-import { BACKEND_URL, TrackType } from "@/config/lib"
+import { BACKEND_URL, TrackType } from "@/config/config"
 
 type Track = {
   id: number
