@@ -7,14 +7,13 @@ export function AuthProvider({
     children : React.ReactNode
 }){
 
-    if(window === undefined){
-        return
+    if(window === undefined || !window){
+        return;
     }
     const token = localStorage.getItem("token")
 
     if(!token){
-        redirect("/signin")
-    }
+        redirect("/signin")    }
 
     return (
         <>

@@ -7,12 +7,12 @@ export function Navbar() {
 
   return (
       <header className="m-auto max-w-7xl p-4 pt-6">
-        <div className="flex items-center justify-between cursor-pointer" onClick={() => router.push("/")}>
+        <div className="flex items-center justify-between cursor-pointer">
           <motion.div
              initial = {{opacity : 0, x : -50}}
              animate = {{opacity : 1, x : 0}}
              transition={{type : "spring", stiffness : 400, damping:12}}
-              className="flex items-center gap-3">
+              className="flex items-center gap-3" onClick={() => router.push("/")}>
             <motion.div
               whileHover={{ scale: 1.2 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}

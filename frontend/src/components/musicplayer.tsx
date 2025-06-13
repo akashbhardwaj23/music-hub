@@ -4,27 +4,17 @@ import { useState, useRef, useEffect } from "react"
 import { motion, AnimatePresence, useAnimation } from "framer-motion"
 import { Play, Pause, SkipBack, SkipForward, Volume2, Heart, Repeat, Shuffle } from "lucide-react"
 import { AudioSpectrum } from "@/components/ui-effects/audiospectrum"
-import axios from "axios"
-import { BACKEND_URL, TrackType } from "@/config/config"
-
-type Track = {
-  id: number
-  title: string
-  artist: string
-  album: string
-  duration: number
-  coverArt: string
-  audioSrc: string
-  isFavorite: boolean
-  genre: string
-}
-
+import { TrackType } from "@/config/config"
+import { BorderBeam } from "./magicui/border-beam"
+import Image from "next/image"
 
 
 export default function MusicPlayer({
-  tracks
+  tracks,
+  currentTrack
 } : {
   tracks : TrackType[]
+  currentTrack : TrackType 
 }) {
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
@@ -88,7 +78,7 @@ export default function MusicPlayer({
   // }, [])
 
 
-  const currentTrack = tracks[currentTrackIndex]
+  // const currentTrack = tracks[currentTrackIndex]
 
   useEffect(() => {
     const audio = audioRef.current
@@ -185,7 +175,7 @@ export default function MusicPlayer({
 
 
   return (
-    <div className="border border-border bg-card overflow-hidden shadow-sm rounded-md">
+    <div className="relative bg-card overflow-hidden shadow-sm rounded-[10px]">
       <div className="p-0 h-full flex flex-col">
         <div className="flex-1 overflow-hidden">
           <div className="h-full flex flex-col p-4">
@@ -212,14 +202,16 @@ export default function MusicPlayer({
                     }}
                   >
                     <motion.div
-                      className="absolute inset-0 overflow-hidden border border-border"
+                      className="absolute inset-0 border border-border"
                       whileHover={{ scale: 1.02 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <img
+                      <Image
                         src={currentTrack.songImg || ""}
                         alt={`${currentTrack.songName} by`}
-                        className="w-full h-full object-cover"
+                        width={600}
+                        height={600}
+                        className="w-full h-full rounded-[12px] object-cover"
                       />
                     </motion.div>
 
@@ -266,7 +258,11 @@ export default function MusicPlayer({
                   <div
                     className="absolute h-full bg-primary rounded-full"
                     style={{ width: `${(currentTime / duration) * 100}%` }}
-                  ></div>
+                  >
+                    <motion.div className="absolute h-4 w-4 rounded-full shadow-2xl bg-red-900" style={{
+                      left : `${(currentTime / duration) * 100 + 10}%` 
+                    }}/>
+                  </div>
                   <input
                     type="range"
                     min="0"
@@ -291,6 +287,7 @@ export default function MusicPlayer({
                     }}
                     className="h-full w-1/4 bg-primary/50"
                   />
+                  
                 </div>
               )}
             </div>
@@ -367,6 +364,18 @@ export default function MusicPlayer({
       </div>
 
       <audio ref={audioRef} src={currentTrack.songurl} onEnded={handleNextTrack} preload="none" />
+      
+      <BorderBeam
+          duration={6}
+          size={400}
+          className="from-transparent via-red-500 to-transparent"
+        />
+        <BorderBeam
+          duration={6}
+          delay={3}
+          size={400}
+          className="from-transparent via-sky-500 to-transparent"
+        />
     </div>
   )
 }

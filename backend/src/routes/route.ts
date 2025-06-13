@@ -110,4 +110,9 @@ router.get("/songs", async (req : Request , res : Response) => {
 })
 
 
+router.post("/addSong", async (req : Request, res : Response) => {
+    
+})
+
+
 export default router;

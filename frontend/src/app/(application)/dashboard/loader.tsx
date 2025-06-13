@@ -1,8 +1,13 @@
+import { cn } from "@/lib/utils";
 import { motion } from "motion/react"
 
-export default function Loader(){
+export default function Loader({
+  className
+} : {
+  className ? : string
+}){
   return ( 
-      <div className="flex relative items-center justify-center w-full top-10">
+      <div className={cn("flex relative items-center justify-center w-full top-10", className)}>
         <BarLoader />
       </div>
   );
