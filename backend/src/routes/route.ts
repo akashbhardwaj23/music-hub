@@ -3,11 +3,8 @@ import { SignInInputs, SignUpInputs } from "../zod";
 import { prisma } from "../db/db";
 import jwt from "jsonwebtoken"
 import bcryptjs from "bcryptjs"
-import { songs } from "../lib/utils";
 
 const router = Router();
-
-
 
 router.post("/login", async (req : Request, res : Response) => {
     const success = SignInInputs.safeParse(req.body);
@@ -114,6 +111,13 @@ router.get("/songs", async (req : Request , res : Response) => {
 
 router.post("/addSong", async (req : Request, res : Response) => {
     
+})
+
+
+router.get("/health", (req : Request, res : Response) => {
+    res.status(200).json({
+        message : "All Ok"
+    })
 })
 
 
