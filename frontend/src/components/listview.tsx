@@ -14,7 +14,7 @@ export default function ListView({
 }) {
   return (
     <div className="h-full relative border border-border bg-card shadow-sm rounded-md">
-      <div className="p-8 grid grid-cols-3 gap-4">
+      <div className="p-10 grid grid-cols-3 gap-4">
         <AnimatePresence>
           {tracks &&
             tracks.map((track, index) => (
