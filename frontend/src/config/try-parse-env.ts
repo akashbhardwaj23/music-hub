@@ -7,6 +7,7 @@ export default function tryParseEnv<T extends ZodRawShape>(
   buildEnv: Record<string, string | undefined> = process.env,
 ) {
   try {
+    console.log(buildEnv)
     EnvSchema.parse(buildEnv);
   }
   catch (error) {

@@ -30,7 +30,9 @@ export default function SignIn() {
       const response = await axios.post(`${BACKEND_URL}/api/v1/login`);
 
       const token = response.data.token;
+      const userId = response.data.userId
       localStorage.setItem("token", token);
+      localStorage.setItem("userId", userId);
       setLoading(false);
     } catch {
       toast.error("Error While SignIn");
@@ -45,9 +47,9 @@ export default function SignIn() {
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.3 }}
-        className="flex flex-col shadow-2xl bg-background font-poppins relative rounded-[12px] p-6 px-10 w-[40rem] overflow-hidden before:h-10 before:absolute before:bg-conic before:bg-red-700"
+        className="flex flex-col shadow-2xl border border-border bg-background font-poppins relative rounded-[12px] p-6 px-10 w-[40rem] overflow-hidden before:h-10 before:absolute before:bg-conic before:bg-red-700"
       >
-        <div className="text-4xl flex justify-center items-center w-full mb-4 font-bold text-transparent bg-clip-text bg-gradient-to-br from-sky-400 to-sky-600">
+        <div className="text-4xl flex justify-center p-2 items-center w-full mb-4 font-bold text-transparent bg-clip-text bg-gradient-to-br from-sky-200 to-sky-400">
           <h1>Sign In</h1>
         </div>
 
@@ -62,6 +64,7 @@ export default function SignIn() {
         <div className="flex flex-col gap-4 mb-8">
           <Label>Password</Label>
           <Input
+          type = "password"
             placeholder="Enter you'r email"
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -70,7 +73,7 @@ export default function SignIn() {
         <div className="flex w-full mb-4">
           <Button
             variant={"default"}
-            className="w-full cursor-pointer rounded-[10px] bg-gradient-to-r from-sky-600 via-sky-700 to-sky-800"
+            className="w-full cursor-pointer rounded-[10px] bg-gradient-to-r from-sky-200 via-sky-300 to-sky-400"
             onClick={handleSignIn}
           >
             {loading ? <Loader className="top-0 h-4" /> : <span>Sign In</span>}

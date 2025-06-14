@@ -1,19 +1,21 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, Dispatch, SetStateAction, useCallback } from "react"
 import { motion, AnimatePresence, useAnimation } from "framer-motion"
 import { Play, Pause, SkipBack, SkipForward, Volume2, Heart, Repeat, Shuffle } from "lucide-react"
 import { AudioSpectrum } from "@/components/ui-effects/audiospectrum"
-import { TrackType } from "@/config/config"
+import { TrackType } from "@/config/types"
 import { BorderBeam } from "./magicui/border-beam"
 import Image from "next/image"
 
 
 export default function MusicPlayer({
   tracks,
+  setCurrentTrack,
   currentTrack
 } : {
   tracks : TrackType[]
+  setCurrentTrack :  Dispatch<SetStateAction<TrackType | undefined>>
   currentTrack : TrackType 
 }) {
   const [isPlaying, setIsPlaying] = useState(false)
@@ -24,10 +26,33 @@ export default function MusicPlayer({
   const [isLoaded, setIsLoaded] = useState(false)
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const visualizerControls = useAnimation()
- 
+  
+  
+
+  const nextTrack = useCallback(() => {
+    console.log("function got called")
+      const songIndex = tracks?.findIndex((track, idx) => track.id === currentTrack.id);
+
+      const newCurrentTrackIndex = songIndex === (tracks.length - 1) ? 0 : songIndex + 1; 
+      const newCurrentTrack = tracks[newCurrentTrackIndex];
+      console.log("newTrack is ",newCurrentTrack)
+
+      setCurrentTrack(newCurrentTrack)
+      setIsPlaying(false)
+  }, [currentTrack])
 
 
-  console.log("Tracks are ", tracks)
+  const previousTrack = useCallback(() => {
+    const songIndex = tracks?.findIndex((track) => track.id === currentTrack.id);
+    const newSongIndex = songIndex === 0 ? (tracks.length - 1) : songIndex - 1;
+    
+    const newCurrentTrack = tracks[newSongIndex];
+
+    setCurrentTrack(newCurrentTrack)
+}, [currentTrack])
+
+// console.log("currentTrackId is ", currentTrack)
+
 
   // const tracks: Track[] = [
   //   {
@@ -92,14 +117,15 @@ export default function MusicPlayer({
       setIsLoaded(true)
     }
 
+
     console.log("Current Time ",currentTime)
     console.log("Current Duration ",duration)
 
 
     audio.addEventListener("timeupdate", updateTime)
     audio.addEventListener("loadedmetadata", updateDuration)
+    // audio.addEventListener('ended', nextTrack);
 
-    // cleanup function when the effect ran
     return () => {
       console.log("clean up is getting called")
       audio.removeEventListener("timeupdate", updateTime)
@@ -114,7 +140,6 @@ export default function MusicPlayer({
 
     console.log("Is playing ",isPlaying)
     if (isPlaying) {
-      
       audio.play().catch((error) => {
         console.error("Error playing audio:", error)
         setIsPlaying(false)
@@ -152,12 +177,17 @@ export default function MusicPlayer({
 
   const handlePrevTrack = () => {
     setIsLoaded(false)
-    setCurrentTrackIndex((prev) => (prev === 0 ? tracks.length - 1 : prev - 1))
+    // setCurrentTrackIndex((prev) => (prev === 0 ? tracks.length - 1 : prev - 1))
+    previousTrack()
+    setIsPlaying(false)
+
   }
 
   const handleNextTrack = () => {
     setIsLoaded(false)
-    setCurrentTrackIndex((prev) => (prev === tracks.length - 1 ? 0 : prev + 1))
+    // setCurrentTrackIndex((prev) => (prev === tracks.length - 1 ? 0 : prev + 1))
+    nextTrack()
+    setIsPlaying(false)
   }
 // TODO : what is this
   const handleSeek = (value: number[]) => {
@@ -202,7 +232,7 @@ export default function MusicPlayer({
                     }}
                   >
                     <motion.div
-                      className="absolute inset-0 border border-border"
+                      className="absolute inset-0 rounded-[12px] border border-border"
                       whileHover={{ scale: 1.02 }}
                       transition={{ duration: 0.2 }}
                     >
@@ -211,7 +241,7 @@ export default function MusicPlayer({
                         alt={`${currentTrack.songName} by`}
                         width={600}
                         height={600}
-                        className="w-full h-full rounded-[12px] object-cover"
+                        className="w-full h-full object-contain"
                       />
                     </motion.div>
 

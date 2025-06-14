@@ -1,8 +1,10 @@
 "use client"
-import { BACKEND_URL, TrackType } from "@/config/config";
+import { BACKEND_URL } from "@/config/config";
+import {TrackType} from '@/config/types'
 import axios from "axios";
 import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
-
+import {useLiveQuery} from "dexie-react-hooks"
+import { db } from "@/lib/db";
 
 
 interface MusicContextType {
@@ -26,29 +28,37 @@ export default function MusicContextProvider({
     const [tracks, setTracks] = useState<TrackType[] | undefined>();
     const [error, setError] = useState('')
     const [currentTrack, setCurrenTrack] = useState<TrackType | undefined>();
-
+    const dbTracks = useLiveQuery(() => db.tracks.toArray());
+    console.log("tracks are ", dbTracks)
 
     useEffect(() => {
-        const fetchTracks = async () => {
-            try {
-      
-              const abortController = new AbortController();
-              const response = await axios.get(`${BACKEND_URL}/api/v1/songs`)
-              console.log(response.data)
-      
-              const data:TrackType[] = response.data.songs;
-              const current = data[0];
-              console.log(data)
-              setTracks(data)
-              setCurrenTrack(current)
-            } catch (e : any) {
-                console.log(e);
-                //  const axioserror = e as AxiosError;
-                setError(e.message)
-            }
-          }
-          fetchTracks()
-    }, [])
+        if(dbTracks && dbTracks.length === 0){
+            console.log("There is no db track")
+            const fetchTracks = async () => {
+                try {
+                  const response = await axios.get(`${BACKEND_URL}/api/v1/songs`)
+                  console.log(response.data)
+          
+                  const data:TrackType[] = response.data.songs;
+                 const dbTracksData = await db.tracks.bulkAdd(data)
+
+                  const current = data[0];
+                  console.log(data)
+                  setTracks(data)
+                  setCurrenTrack(current)
+                } catch (e : any) {
+                    console.log(e);
+                    //  const axioserror = e as AxiosError;
+                    setError(e.message)
+                }
+              }
+              fetchTracks()
+        } else if(dbTracks && dbTracks.length > 0) {
+            console.log("Db tracks setting")
+            setTracks(dbTracks)
+            setCurrenTrack(dbTracks[0])
+        }
+    }, [dbTracks])
 
     return (
         <MusicContext.Provider value={{tracks, setTracks, error, setError, currentTrack, setCurrenTrack}}>

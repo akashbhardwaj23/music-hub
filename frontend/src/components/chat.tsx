@@ -4,12 +4,16 @@ import React, { useState, useRef, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Send, Bot, User, Smile, Paperclip, Mic } from "lucide-react"
 import { emojis } from "@/lib/emojis"
+import { useChat } from "@/context/provider/chatprovider"
+import { ChatService } from "@/services/chat"
+import { serverTimestamp } from "firebase/database"
+import { Message } from "@/config/types"
 
-type Message = {
+type MessageFirestore = {
   id: number
   text: string
-  sender: "user" | "system"
-  timestamp: Date
+  sender: string
+  timestamp: object | number
   status?: "sending" | "sent" | "delivered" | "read"
   reactions?: string[]
   attachments?: {
@@ -20,55 +24,16 @@ type Message = {
 }
 
 export default function ChatComponent() {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: 1,
-      text: "Welcome to Motion Music. How can I assist you today?",
-      sender: "system",
-      timestamp: new Date(Date.now() - 3600000),
-      status: "read",
-    },
-    {
-      id: 2,
-      text: "I'm looking for some ambient music to help me focus while coding.",
-      sender: "user",
-      timestamp: new Date(Date.now() - 3000000),
-      status: "read",
-    },
-    {
-      id: 3,
-      text: "I recommend 'Midnight Echoes' by Vercel Audio. It's perfect for deep focus and coding sessions.",
-      sender: "system",
-      timestamp: new Date(Date.now() - 2400000),
-      status: "read",
-    },
-    {
-      id: 4,
-      text: "That sounds perfect. Can you play it for me?",
-      sender: "user",
-      timestamp: new Date(Date.now() - 1800000),
-      status: "read",
-    },
-    {
-      id: 5,
-      text: "Now playing 'Midnight Echoes'. How's your coding project coming along?",
-      sender: "system",
-      timestamp: new Date(Date.now() - 1200000),
-      status: "read",
-      attachments: [
-        {
-          type: "audio",
-          url: "/placeholder-audio.mp3",
-          name: "Midnight Echoes - Vercel Audio",
-        },
-      ],
-    },
-  ])
+  const {messages, setMessages} = useChat()
 
   const [newMessage, setNewMessage] = useState("")
   const [isTyping, setIsTyping] = useState(false)
   const [showEmojiPicker, setShowEmojiPicker] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const userId = localStorage.getItem("userId")!
+
+
+  // console.log("messages ", messages)
 
   useEffect(() => {
     scrollToBottom()
@@ -83,44 +48,22 @@ export default function ChatComponent() {
 
     if (newMessage.trim() === "") return
 
-    const userMessage: Message = {
+    const userMessage: MessageFirestore = {
       id: Date.now(),
       text: newMessage,
-      sender: "user",
-      timestamp: new Date(),
+      sender: userId,
+      timestamp: serverTimestamp(),
       status: "sending",
     }
 
-    setMessages((prev) => [...prev, userMessage])
+    // setMessages((prev) => [...prev, userMessage])
     setNewMessage("")
     setShowEmojiPicker(false)
     setIsTyping(true)
 
-    // Simulate message status updates
-    setTimeout(() => {
-      setMessages((prev) => prev.map((msg) => (msg.id === userMessage.id ? { ...msg, status: "sent" } : msg)))
+    ChatService.sendMessage('1', '1', userMessage)
 
-      setTimeout(() => {
-        setMessages((prev) => prev.map((msg) => (msg.id === userMessage.id ? { ...msg, status: "delivered" } : msg)))
-
-        setTimeout(() => {
-          setMessages((prev) => prev.map((msg) => (msg.id === userMessage.id ? { ...msg, status: "read" } : msg)))
-        }, 1000)
-      }, 1000)
-    }, 1000)
-
-    // Simulate a response after a short delay
-    setTimeout(() => {
-      const systemResponse: Message = {
-        id: Date.now() + 1,
-        text: getRandomResponse(),
-        sender: "system",
-        timestamp: new Date(),
-        status: "delivered",
-      }
-      setMessages((prev) => [...prev, systemResponse])
-      setIsTyping(false)
-    }, 3000)
+    setMessages((prev) => prev.map((msg) => (msg.id === userMessage.id ? {...msg, status : "sent"} : msg)))
   }
 
   const getRandomResponse = () => {
@@ -195,41 +138,39 @@ export default function ChatComponent() {
           </div>
         </div>
 
-        {/* Messages */}
         <div className="flex-1 p-4 overflow-auto">
           <div className="space-y-6">
-             {/* Day Seprator */}
             <div className="flex items-center justify-center">
-              <div className="bg-muted/30 text-muted-foreground text-xs px-3 py-1">
-                {formatDate(messages[0].timestamp)}
-              </div>
+              {messages.length > 0 && (<div className="bg-muted/30 text-muted-foreground text-xs px-3 py-1">
+                {formatDate(new Date(messages[0].timestamp))}
+              </div>)}
             </div>
 
             <AnimatePresence initial={false}>
-              {messages.map((message, index) => {
-                // const showDateSeparator =
-                //   index > 0 && formatDate(message.timestamp) !== formatDate(messages[index - 1].timestamp)
+              {messages && messages.map((message, index) => {
+                const showDateSeparator =
+                  index > 0 && formatDate(new Date(message.timestamp)) !== formatDate(new Date(messages[index - 1].timestamp))
 
                 return (
                   <div key={message.id}>
-                    {/* {showDateSeparator && (
+                    {showDateSeparator && (
                       <div className="flex items-center justify-center my-4">
                         <div className="bg-[var(--muted)]/30 text-[var(--muted-foreground)] text-xs px-3 py-1">
-                          {formatDate(message.timestamp)}
+                          {formatDate(new Date(message.timestamp))}
                         </div>
                       </div>
-                    )} */}
+                    )} 
 
                     <motion.div
                       initial={{ opacity: 0, y: 5 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.2 }}
-                      className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
+                      className={`flex ${message.sender === userId ? "justify-end" : "justify-start"}`}
                     >
                       <div
-                        className={`flex gap-3 max-w-[80%] ${message.sender === "user" && "flex-row-reverse"}`}
+                        className={`flex gap-3 max-w-[80%] ${message.sender === userId  && "flex-row-reverse"}`}
                       >
-                        {message.sender === "system" && (
+                        {message.sender !== userId && (
                           <div className="size-8 bg-primary text-primary-foreground px-2 rounded-full flex items-center justify-center">
                             <Bot className="size-4" />
                           </div>
@@ -238,7 +179,7 @@ export default function ChatComponent() {
                         <div className="space-y-1">
                           <div
                             className={`text-center px-4 py-3 rounded-lg ${
-                              message.sender === "user"
+                              message.sender === userId
                                 ? "bg-primary text-primary-foreground"
                                 : "bg-secondary text-secondary-foreground border border-border"
                             }`}
@@ -265,19 +206,18 @@ export default function ChatComponent() {
 
                           <div
                             className={`flex items-center text-xs ${
-                              message.sender === "user" ? "justify-end" : "justify-start"
+                              message.sender === userId ? "justify-end" : "justify-start"
                             }`}
                           >
-                            <span className="text-muted-foreground">{formatTime(message.timestamp)}</span>
+                            <span className="text-muted-foreground">{formatTime(new Date(message.timestamp))}</span>
 
-                            {/* message.sender is optional */}
-                            {message.sender === "user" && message.status && (
+                            {message.sender === userId && message.status && (
                               <span className="ml-2">{renderStatus(message.status)}</span>
                             )}
                           </div>
 
                           {message.reactions && message.reactions.length > 0 && (
-                            <div className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}>
+                            <div className={`flex ${message.sender === userId ? "justify-end" : "justify-start"}`}>
                               <div className="flex -space-x-1 bg-muted/30 px-2 py-0.5 border border-border">
                                 {message.reactions.map((reaction, i) => (
                                   <div key={i} className="text-sm">
@@ -288,9 +228,7 @@ export default function ChatComponent() {
                             </div>
                           )}
                         </div>
-
-                        {/* User icon */}
-                        {message.sender === "user" && (
+                        {message.sender === userId && (
                           <div className="size-8 bg-secondary text-secondary-foreground rounded-full flex items-center justify-center">
                             <User className="size-4" />
                           </div>
@@ -301,7 +239,7 @@ export default function ChatComponent() {
                 )
               })}
             </AnimatePresence>
-
+{/* 
             {isTyping && (
               <motion.div initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="flex justify-start">
                 <div className="flex gap-3">
@@ -342,7 +280,7 @@ export default function ChatComponent() {
                   </div>
                 </div>
               </motion.div>
-            )}
+            )} */}
 
             <div ref={messagesEndRef} />
           </div>

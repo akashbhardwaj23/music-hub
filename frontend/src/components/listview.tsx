@@ -1,19 +1,29 @@
-import { TrackType } from "@/config/config";
+import { TrackType } from "@/config/types";
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { CircleDashedIcon } from "lucide-react";
 import { IconCircleDashedPlus } from "@tabler/icons-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./ui/tooltip";
+import { Input } from "./ui/input";
 
 export default function ListView({
   tracks,
   setCurrenTrack,
+  setModelOpen
 }: {
   tracks: TrackType[];
   setCurrenTrack: Dispatch<SetStateAction<TrackType | undefined>>;
+  setModelOpen : Dispatch<SetStateAction<boolean>>
 }) {
   return (
     <div className="h-full relative border border-border bg-card shadow-sm rounded-md">
+    
       <div className="p-10 grid grid-cols-3 gap-4">
         <AnimatePresence>
           {tracks &&
@@ -43,9 +53,22 @@ export default function ListView({
             ))}
         </AnimatePresence>
       </div>
-      <button className="p-10 w-full absolute flex justify-end left-0 bottom-2 cursor-pointer">
-        <IconCircleDashedPlus className="w-10 h-10 text-forground backdrop-blur-md" />
-      </button>
+      <TooltipProvider
+      >
+        <Tooltip>
+          <div className="w-full p-8 absolute flex justify-end left-0 bottom-2">
+          <TooltipTrigger>
+            <button className="cursor-pointer" onClick={() => setModelOpen(true)}>
+              <IconCircleDashedPlus className="w-10 h-10 text-forground backdrop-blur-md" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Add New Songs</p>
+          </TooltipContent>
+          </div>
+        </Tooltip>
+      </TooltipProvider>
+
     </div>
   );
 }

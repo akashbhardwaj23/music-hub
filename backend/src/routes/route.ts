@@ -48,6 +48,7 @@ router.post("/login", async (req : Request, res : Response) => {
         const token = jwt.sign({id : user.id}, process.env.JWT_SECRET!)
 
         res.json({
+            userId : user.id,
             token
         })
     } catch (error) {
@@ -87,6 +88,7 @@ router.post("/register", async (req: Request , res : Response) => {
         const token = jwt.sign({userId : user.id}, process.env.JWT_SECRET!)
 
         res.json({
+            userId : user.id,
             token
         })
 

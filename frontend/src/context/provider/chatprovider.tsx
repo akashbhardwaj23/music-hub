@@ -1,4 +1,4 @@
-import { MessageType } from "@/config/types";
+import { Message } from "@/config/types";
 import { ChatService } from "@/services/chat";
 import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 
@@ -10,13 +10,11 @@ export interface CurrentRoomType {
 
 
 export interface ChatStoreType {
-    currentRoom : CurrentRoomType | undefined
-    setCurrentRoom : Dispatch<SetStateAction<CurrentRoomType | undefined>>
-    messages : MessageType[]
-    setMessages : Dispatch<SetStateAction<MessageType[]>>
+    currentRoom : CurrentRoomType
+    setCurrentRoom : Dispatch<SetStateAction<CurrentRoomType>>
+    messages : Message[]
+    setMessages : Dispatch<SetStateAction<Message[]>>
 }
-
-
 
 
 export const ChatStore = createContext<ChatStoreType | null>(null);
@@ -27,11 +25,12 @@ export function ChatProvider({
 } : {
     children : React.ReactNode
 }){
-    const [currentRoom, setCurrentRoom] = useState<CurrentRoomType>();
-    const [messages, setMessages] = useState<MessageType[]>([]);
+    const [currentRoom, setCurrentRoom] = useState<CurrentRoomType>({
+        id : '1'
+    });
+    const [messages, setMessages] = useState<Message[]>([]);
 
     useEffect(() => {
-        
         if(currentRoom?.id){
             const unsubscribe = ChatService.subscribeToMessage(currentRoom.id, setMessages);
 
@@ -51,7 +50,7 @@ export function ChatProvider({
 export const useChat = () => {
     const context = useContext(ChatStore);
 
-    if(context === null){
+    if(!context){
         throw Error("Context Can't be null")
     }
 

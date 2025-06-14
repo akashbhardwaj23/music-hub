@@ -39,6 +39,7 @@ export default function Register() {
 
       const data = response.data;
       localStorage.setItem("token", data.token);
+      localStorage.setItem('userId', data.userId)
 
       router.push("/dashboard");
     } catch (error) {

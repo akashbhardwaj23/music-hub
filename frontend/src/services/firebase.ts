@@ -1,18 +1,22 @@
 import { initializeApp } from "firebase/app";
 import {getDatabase} from "firebase/database"
-import env from "@/config/env"
+import {getAuth} from "firebase/auth"
+// import env from "@/config/env"
+
+// console.log(env)
 
 const firebaseConfig = {
-    apiKey: env.APIKEY,
-  authDomain: env.AUTHDOMAIN,
-  projectId: env.PROJECTID,
-  storageBucket: env.STORAGEBUCKET,
-  messagingSenderId: env.MESSAGESENDERID,
-  appId: env.APPID
+    apiKey: process.env.NEXT_PUBLIC_APIKEY,
+  authDomain: process.env.NEXT_PUBLIC_AUTHDOMAIN,
+  projectId: process.env.NEXT_PUBLIC_PROJECTID,
+  databaseURL: process.env.NEXT_PUBLIC_DATABASE_URL,
+  storageBucket: process.env.NEXT_PUBLIC_STORAGEBUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGESENDERID,
+  appId: process.env.NEXT_PUBLIC_APPID
 }
 
 
 const app = initializeApp(firebaseConfig);
-
+export const auth = getAuth(app)
 export const db = getDatabase(app);
 
