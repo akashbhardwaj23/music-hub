@@ -39,6 +39,30 @@ export type Message = {
     }[]
   }
 
+
+  export type RoomType = {
+    id : string,
+    name : string,
+    description : string,
+    songId : string
+  }
+
+
+  export type Room ={
+    song: {
+        id: string;
+        songName: string;
+        favorite: boolean;
+        songurl: string;
+        songImg: string;
+        songDescription: string;
+    };
+} & {
+    id: string;
+    name: string;
+    description: string;
+    songId: string;
+}
   
 export type TrackType = {
   id : string,
@@ -46,6 +70,6 @@ export type TrackType = {
   favorite : boolean,
   songurl : string,
   songImg : string,
-  songDesccription : string
+  songDescription : string
 }
 

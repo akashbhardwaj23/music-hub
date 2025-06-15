@@ -15,12 +15,24 @@ model User {
   email     String   @unique
   name      String
   passsword String
+  roomId    String?
+  room      Rooms?    @relation(fields: [roomId], references: [id])
+}
+
+model Rooms {
+  id       String   @id  @default(uuid())
+  name     String
+  description String
+  users    User[]
+  songId   String
+  song     Songs    @relation(fields: [songId], references: [id])
 }
 
 model Songs {
   id              String  @id  @default(uuid())
   songName        String
   favorite        Boolean   @default(false)
+  room            Rooms[]
   songurl         String
   songImg         String
   songDescription String

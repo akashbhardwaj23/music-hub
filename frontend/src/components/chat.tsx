@@ -7,7 +7,7 @@ import { emojis } from "@/lib/emojis"
 import { useChat } from "@/context/provider/chatprovider"
 import { ChatService } from "@/services/chat"
 import { serverTimestamp } from "firebase/database"
-import { Message } from "@/config/types"
+import { Message, Room } from "@/config/types"
 
 type MessageFirestore = {
   id: number
@@ -23,7 +23,11 @@ type MessageFirestore = {
   }[]
 }
 
-export default function ChatComponent() {
+export default function ChatComponent({
+  room
+}: {
+  room : Room
+}) {
   const {messages, setMessages} = useChat()
 
   const [newMessage, setNewMessage] = useState("")
@@ -121,7 +125,18 @@ export default function ChatComponent() {
   }
 
   return (
-    <div className="h-full border border-border bg-card shadow-sm rounded-md">
+    <motion.div
+    initial={{
+      opacity : 0
+    }}
+    animate={{
+      opacity : 1
+    }}
+    transition={{
+      duration : 0.7,
+      ease : "easeInOut"
+    }}
+    className="h-full border border-border bg-card shadow-sm rounded-md">
       <div className="flex flex-col h-full">
         <div className="p-4 border-b border-border">
           <div className="flex items-center justify-between">
@@ -131,7 +146,7 @@ export default function ChatComponent() {
               </div>
 
               <div>
-                <h2 className="text-base font-medium text-foreground">Music Assistant</h2>
+                <h2 className="text-base font-medium text-foreground">{room.name}</h2>
                 <p className="text-xs text-[var(--muted-foreground)]">Online</p>
               </div>
             </div>
@@ -239,7 +254,7 @@ export default function ChatComponent() {
                 )
               })}
             </AnimatePresence>
-{/* 
+    {/* 
             {isTyping && (
               <motion.div initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="flex justify-start">
                 <div className="flex gap-3">
@@ -348,7 +363,7 @@ export default function ChatComponent() {
           </form>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 

@@ -11,13 +11,16 @@ import { BorderBeam } from "@/components/magicui/border-beam";
 import { IconBrandGoogle } from "@tabler/icons-react";
 import axios from "axios";
 import { BACKEND_URL } from "@/config/config";
-import Loader from "../(application)/dashboard/loader";
+import Loader from "@/components/loader";
+import { useRouter } from "next/navigation";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [hover, setHover] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
+
+  const router = useRouter()
 
   const handleSignIn = async () => {
     if (!email || !password) {
@@ -34,6 +37,7 @@ export default function SignIn() {
       localStorage.setItem("token", token);
       localStorage.setItem("userId", userId);
       setLoading(false);
+      router.push('/')
     } catch {
       toast.error("Error While SignIn");
       setLoading(false);

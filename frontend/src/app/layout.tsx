@@ -3,6 +3,8 @@ import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
 import Provider from "@/context/provider/themeprovider";
 import { ThemeLayout } from "./(application)/ThemeLayout";
+import { Navbar } from "@/components/ui/navbar";
+import { AuthProvider } from "@/context/provider/authprovider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,11 +17,10 @@ const geistMono = Geist_Mono({
 });
 
 const poppins = Poppins({
-  variable : '--font-poppins',
-  weight : ['400', '500','600'],
-  subsets : ['latin']
-})
-
+  variable: "--font-poppins",
+  weight: ["400", "500", "600"],
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "Muxi",
@@ -38,7 +39,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${poppins.className} antialiased`}
       >
-        <ThemeLayout>{children}</ThemeLayout>
+        <ThemeLayout>
+          <AuthProvider>
+            <Navbar />
+            {children}
+          </AuthProvider>
+        </ThemeLayout>
       </body>
     </html>
   );

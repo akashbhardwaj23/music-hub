@@ -111,6 +111,10 @@
 
 @theme {
   --color-background : var(--background);
+  --shadow-glass : 0 8px 32px rgba(0, 0, 0, 0.1),
+  inset 0 1px 0 rgba(255, 255, 255, 0.5),
+  inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+  inset 0 0 20px 10px rgba(255, 255, 255, 1);
   --color-forground : var(--foreground);
   --color-border : var(--border);
   --color-primary : var(--primary);
@@ -120,7 +124,8 @@
   --color-card : var(--card);
   --color-muted : var(--muted);
   --color-muted-foreground : var(--muted-foreground);
-  --color-accent : var(--accent)
+  --color-accent : var(--accent);
+  --animate-marque : marquee 20s linear infinite;
 }
 
 @layer base {
@@ -168,4 +173,17 @@
 /* 3D perspective */
 .perspective-1000 {
   perspective: 1000px;
+}
+
+
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  50% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }

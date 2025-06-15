@@ -121,7 +121,15 @@ exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
   name: 'name',
-  passsword: 'passsword'
+  passsword: 'passsword',
+  roomId: 'roomId'
+};
+
+exports.Prisma.RoomsScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  songId: 'songId'
 };
 
 exports.Prisma.SongsScalarFieldEnum = {
@@ -143,9 +151,15 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
 
 exports.Prisma.ModelName = {
   User: 'User',
+  Rooms: 'Rooms',
   Songs: 'Songs'
 };
 

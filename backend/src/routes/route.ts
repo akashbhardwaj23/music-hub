@@ -1,124 +1,238 @@
 import { Router, type Request, type Response } from "express";
 import { SignInInputs, SignUpInputs } from "../zod";
 import { prisma } from "../db/db";
-import jwt from "jsonwebtoken"
-import bcryptjs from "bcryptjs"
+import jwt from "jsonwebtoken";
+import bcryptjs from "bcryptjs";
+import { AuthMiddleWare } from "../middleware/auth";
 
 const router = Router();
 
-router.post("/login", async (req : Request, res : Response) => {
-    const success = SignInInputs.safeParse(req.body);
+router.post("/login", async (req: Request, res: Response) => {
+  const success = SignInInputs.safeParse(req.body);
 
-    if(!success.success){
-        res.status(403).json({
-            message : "Inputs are Incorrect"
-        })
-        return
-    }
-    
+  if (!success.success) {
+    res.status(403).json({
+      message: "Inputs are Incorrect",
+    });
+    return;
+  }
 
-    try {
-        
-        const user = await prisma.user.findFirst({
-            where : {
-                email : success.data!.email
-            }
-        })
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        email: success.data!.email,
+      },
+    });
 
-        if(!user){
-            res.status(403).json({
-                message : "User is Not Present"
-            })
-            return
-        }
-
-
-        const correctPassword = await bcryptjs.compare(success.data.password, user.passsword)
-
-        if(!correctPassword){
-            res.status(403).json({
-                message : "Password is Incorrect"
-            })
-            return
-        }
-
-        const token = jwt.sign({id : user.id}, process.env.JWT_SECRET!)
-
-        res.json({
-            userId : user.id,
-            token
-        })
-    } catch (error) {
-        res.status(403).json({
-            message : "Email Already Present"
-        })
-    }
-    
-})
-
-
-
-router.post("/register", async (req: Request , res : Response) => {
-    const body = req.body
-
-
-    const success = SignUpInputs.safeParse(body);
-
-    if(!success.success){
-        res.status(403).json({
-            message : "Inputs are not correct"
-        })
-        return
+    if (!user) {
+      res.status(403).json({
+        message: "User is Not Present",
+      });
+      return;
     }
 
-    const hashedPassword = await bcryptjs.hash(success.data.password, 8)
+    const correctPassword = await bcryptjs.compare(
+      success.data.password,
+      user.passsword
+    );
 
-    try {
-        const user = await prisma.user.create({
-            data : {
-                email : success.data.email,
-                name : success.data.name,
-                passsword : hashedPassword
-            }
-        })
-
-        const token = jwt.sign({userId : user.id}, process.env.JWT_SECRET!)
-
-        res.json({
-            userId : user.id,
-            token
-        })
-
-    } catch (error) {
-        console.log("Error user Present")
-        res.status(403).json({
-            message : "User Already Present"
-        })
+    if (!correctPassword) {
+      res.status(403).json({
+        message: "Password is Incorrect",
+      });
+      return;
     }
 
-})
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET!);
 
-
-router.get("/songs", async (req : Request , res : Response) => {
-    const songs = await prisma.songs.findMany();
-
-    console.log("songs are ", songs)
     res.json({
-        songs
+      userId: user.id,
+      token,
+    });
+  } catch (error) {
+    res.status(403).json({
+      message: "Email Already Present",
+    });
+  }
+});
+
+router.post("/register", async (req: Request, res: Response) => {
+  const body = req.body;
+
+  const success = SignUpInputs.safeParse(body);
+
+  if (!success.success) {
+    res.status(403).json({
+      message: "Inputs are not correct",
+    });
+    return;
+  }
+
+  const hashedPassword = await bcryptjs.hash(success.data.password, 8);
+
+  try {
+    const user = await prisma.user.create({
+      data: {
+        email: success.data.email,
+        name: success.data.name,
+        passsword: hashedPassword,
+      },
+    });
+
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!);
+
+    res.json({
+      userId: user.id,
+      token,
+    });
+  } catch (error) {
+    console.log("Error user Present");
+    res.status(403).json({
+      message: "User Already Present",
+    });
+  }
+});
+
+
+router.post("/createRoom", AuthMiddleWare, async (req: Request, res: Response) => {
+  const { name, description, songId } = req.body;
+  const userId = req.userId;
+
+  console.log("here")
+
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        id: userId,
+      },
+    });
+
+    if(!user){
+        res.status(404).json({
+            message : "User Not Found"
+        })
+        return
+    }
+    const song = await prisma.songs.findFirst({
+        where : {
+            id : songId
+        }
+    });
+
+    if(!song){
+        res.status(404).json({
+            message : "Song Not Found"
+        })
+        return 
+    }
+
+    const room = await prisma.rooms.create({
+        data : {
+            name,
+            description,
+            songId : songId,
+        }
+    })
+
+    res.json({
+        roomId : room.id
+    })
+
+
+  } catch (error) {
+    console.log("error is ", error);
+    res.status(401).json({
+        message : "Error While Creating Room"
+    })
+
+  }
+});
+
+router.get("/songs", AuthMiddleWare, async (req: Request, res: Response) => {
+  const songs = await prisma.songs.findMany();
+
+//   console.log("songs are ", songs);
+  res.json({
+    songs,
+  });
+});
+
+router.post("/addSong",AuthMiddleWare, async (req: Request, res: Response) => {});
+
+router.get("/rooms", async (req: Request, res: Response) => {
+    const rooms = await prisma.rooms.findMany({})
+
+    res.json({
+        rooms : rooms
     })
 })
 
+router.get("/songs/:songId", async (req: Request, res: Response) => {
+    const {songId} = req.params
+   try {
+    const song = await prisma.songs.findUnique({
+        where : {
+            id : songId
+        }
+    })
 
-router.post("/addSong", async (req : Request, res : Response) => {
+    if(!song){
+        res.status(404).json({
+            message : "No Song Found"
+        })
+        return
+    }
+
+    res.json({
+        song
+    })
+   } catch (error) {
+    res.status(403).json({
+        message : "Error While Getting Songs"
+    })  
+   }
+})
+
+
+
+router.get("/rooms/:roomId", AuthMiddleWare, async (req: Request, res: Response) => {
+    const {roomId} = req.params
+
+    console.log("here after ", roomId)
+    try {
+    const room = await prisma.rooms.findUnique({
+        where : {
+            id : roomId
+        },
+        include : {
+            song : true
+        }
+    })
     
-})
 
+    console.log(room)
 
-router.get("/health", (req : Request, res : Response) => {
-    res.status(200).json({
-        message : "All Ok"
+    if(!room){
+        res.status(404).json({
+            message : "No Song Found"
+        })
+        return
+    }
+
+    res.json({
+        room
     })
+   } catch (error) {
+    res.status(403).json({
+        message : "Error While Getting Songs"
+    })  
+   }
 })
 
+router.get("/health", (req: Request, res: Response) => {
+  res.status(200).json({
+    message: "All Ok",
+  });
+});
 
 export default router;

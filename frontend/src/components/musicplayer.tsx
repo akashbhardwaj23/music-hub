@@ -144,7 +144,6 @@ export default function MusicPlayer({
         console.error("Error playing audio:", error)
         setIsPlaying(false)
       })
-      // audio visualizer which change 1.5 and it is an animation coming from framer-motion 
       visualizerControls.start({
         opacity: [0.8, 1],
         transition: { duration: 1.5, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
@@ -155,7 +154,6 @@ export default function MusicPlayer({
     }
   }, [isPlaying, currentTrackIndex, visualizerControls])
 
-  // seprate because the whole effect will run if change the volume only
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
@@ -205,7 +203,7 @@ export default function MusicPlayer({
 
 
   return (
-    <div className="relative bg-card overflow-hidden shadow-sm rounded-[10px]">
+    <div className="relative bg-card/40 overflow-hidden shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] rounded-[12px] dark:border dark:border-border">
       <div className="p-0 h-full flex flex-col">
         <div className="flex-1 overflow-hidden">
           <div className="h-full flex flex-col p-4">
@@ -232,16 +230,16 @@ export default function MusicPlayer({
                     }}
                   >
                     <motion.div
-                      className="absolute inset-0 rounded-[12px] border border-border"
+                      className="absolute inset-0"
                       whileHover={{ scale: 1.02 }}
                       transition={{ duration: 0.2 }}
                     >
                       <Image
-                        src={currentTrack.songImg || ""}
+                        src={currentTrack.songImg || "/muxilogo.png"}
                         alt={`${currentTrack.songName} by`}
                         width={600}
                         height={600}
-                        className="w-full h-full object-contain"
+                        className="w-full h-full rounded-[10px] object-contain"
                       />
                     </motion.div>
 
@@ -273,8 +271,7 @@ export default function MusicPlayer({
             </AnimatePresence>
           </div>
         </div>
-
-        {/* Music Controller */}
+        
         <div className="p-4 border-t border-border bg-card">
           <div className="space-y-3">
             <div className="flex items-center justify-between text-xs text-muted-foreground">
@@ -289,9 +286,6 @@ export default function MusicPlayer({
                     className="absolute h-full bg-primary rounded-full"
                     style={{ width: `${(currentTime / duration) * 100}%` }}
                   >
-                    <motion.div className="absolute h-4 w-4 rounded-full shadow-2xl bg-red-900" style={{
-                      left : `${(currentTime / duration) * 100 + 10}%` 
-                    }}/>
                   </div>
                   <input
                     type="range"
@@ -344,9 +338,11 @@ export default function MusicPlayer({
                 <motion.div whileTap={{ scale: 0.95 }}>
                   <button
                     onClick={handlePlayPause}
-                    className="rounded-full size-12 p-0 bg-primary hover:bg-primary/90 text-primary-foreground flex items-center justify-center"
+                    className="rounded-full relative size-12 p-0 bg-primary hover:bg-primary/90 text-primary-foreground flex items-center justify-center"
                   >
                     {isPlaying ? <Pause size={20} /> : <Play size={20} className="ml-1" />}
+
+                    <BorderBeam/>
                   </button>
                 </motion.div>
 

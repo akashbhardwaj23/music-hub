@@ -30,10 +30,10 @@ export async function AuthMiddleWare(req : Request, res : Response, next : NextF
         })
         return
     }
+    console.log(decoded)
 
     //@ts-ignore
-   req.userId = decoded.sub.userId
+   req.userId = decoded.userId
 
    next();
-
 }

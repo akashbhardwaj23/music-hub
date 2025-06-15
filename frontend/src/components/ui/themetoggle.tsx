@@ -1,5 +1,6 @@
 "use client"
 
+import Loader from "@/components/loader";
 import { motion } from "framer-motion"
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
@@ -14,7 +15,7 @@ export function ModeToggle() {
 
     if(!resolvedTheme){
       return <div>
-        Loading
+       <Loader />
       </div>
     }
 

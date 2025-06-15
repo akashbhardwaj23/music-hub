@@ -1,3 +1,7 @@
+"use client"
+
+
+
 import { motion } from "framer-motion";
 import { ModeToggle } from "./themetoggle";
 import { useRouter } from "next/navigation";

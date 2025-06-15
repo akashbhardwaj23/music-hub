@@ -25,8 +25,17 @@ export function AudioSpectrum({ isPlaying, controls }: AudioSpectrumProps) {
     // Get colors based on theme
     const isDarkMode = document.documentElement.classList.contains("dark")
 
+    const lightModeColors = ["#a2d2ff", "#bde0fe", "#ffafcc", "#cdb4db"]
+
+    const selectRandomColor = () => {
+      const colorIndex = Math.floor(Math.random() * 4)
+      console.log("color Index", colorIndex)
+      return lightModeColors[colorIndex]
+    }
+
+    
     // Use simple black/white colors for Vercel-like aesthetic
-    const primaryColor = isDarkMode ? "#ffffff" : "#000000"
+    const primaryColor = isDarkMode ? "#ffffff" : selectRandomColor()
 
     // Number of bars
     const barCount = 64

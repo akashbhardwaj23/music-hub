@@ -10,7 +10,7 @@ import { motion } from "motion/react";
 import axios from "axios";
 import { BACKEND_URL } from "@/config/config";
 import { useRouter } from "next/navigation";
-import Loader from "../(application)/dashboard/loader";
+import Loader from "@/components/loader";
 import { BorderBeam } from "@/components/magicui/border-beam";
 import { IconBrandGoogle } from "@tabler/icons-react";
 
@@ -41,7 +41,7 @@ export default function Register() {
       localStorage.setItem("token", data.token);
       localStorage.setItem('userId', data.userId)
 
-      router.push("/dashboard");
+      router.push("/");
     } catch (error) {
         toast.error("SignUp Process Failed")
       console.log(error);
